@@ -1,19 +1,22 @@
 # AI-LEAD-FINDER
 
-AI Lead Finder is a lead generation engine scaffold designed to parse user queries, build structured lead search results, and prepare enriched lead data for CRM export.
+AI Lead Finder is a modern SaaS dashboard for AI-powered lead generation, outreach, and pipeline management.
 
-## Project Structure
+## What’s included
 
-- `src/types.ts` — core lead data schema and search result types.
-- `src/parser.ts` — query parser for industry, location, and optional filters.
-- `src/lead-generator.ts` — generation pipeline, scoring logic, and result builder.
-- `src/data-source.ts` — sample lead records and query filtering logic.
-- `src/cli.ts` — CLI entrypoint for running queries and printing JSON output.
+- `app/` — Next.js App Router pages for the dashboard, auth flows, lead details, outreach, CRM, and settings.
+- `components/` — reusable UI components with glassmorphism styling, responsive layouts, and motion support.
+- `lib/` — mock lead data, filter helpers, and API client hooks.
+- `app/api/` — backend routes for search, lead loading, outreach generation, and save-lead actions.
 
-## Sample data
+## Features
 
-The current implementation includes a local sample dataset in `src/data-source.ts`.
-This dataset is meant to demonstrate enrichment and query filtering while the real lead source connector is built.
+- Next.js 15 with TypeScript
+- TailwindCSS dark theme and glassmorphism styling
+- Reusable UI primitives inspired by shadcn/ui
+- Animated transitions with Framer Motion
+- Premium SaaS dashboard experience
+- Fully responsive layout and mobile support
 
 ## Quick Start
 
@@ -23,44 +26,35 @@ Install dependencies:
 npm install
 ```
 
-Run the CLI with a sample query:
+Run the development server:
 
 ```bash
-npm run start -- "Find IT companies in Germany"
+npm run dev
 ```
 
-## Output Format
+Open http://localhost:3000
 
-The output is a strict JSON object with this shape:
+## Pages
 
-```json
-{
-  "query": "",
-  "total_leads": 0,
-  "leads": [
-    {
-      "business_name": "",
-      "industry": "",
-      "location": "",
-      "website": null,
-      "email": null,
-      "phone": null,
-      "socials": {
-        "linkedin": null,
-        "instagram": null
-      },
-      "company_size": "Unknown",
-      "activity_status": "Unknown",
-      "intent_signals": [],
-      "lead_score": 0,
-      "lead_category": "COLD"
-    }
-  ]
-}
+- `/` — Landing page
+- `/auth/login` — Login
+- `/auth/register` — Register
+- `/auth/forgot-password` — Password reset
+- `/dashboard` — Main dashboard with search, filters, stats, and lead table
+- `/leads/[id]` — Lead details view
+- `/outreach` — AI outreach generation
+- `/crm` — Pipeline board
+- `/settings` — Workspace settings
+
+## Build
+
+```bash
+npm run build
 ```
 
-## Next Steps
+## Backend routes
 
-- Connect `src/lead-generator.ts` to real data sources.
-- Implement business record extraction and contact enrichment.
-- Add outreach template generation and lead ranking improvements.
+- `GET /api/search`
+- `GET /api/leads`
+- `POST /api/save-lead`
+- `POST /api/outreach`
