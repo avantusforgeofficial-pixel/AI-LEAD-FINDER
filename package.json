@@ -1,0 +1,20 @@
+{
+  "name": "ai-lead-finder",
+  "version": "0.1.0",
+  "description": "Core engine scaffold for AI Lead Finder: structured lead enrichment and scoring.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "ts-node src/cli.ts",
+    "lint": "echo \"No lint configured yet\"",
+    "prepare": "npm run build"
+  },
+  "keywords": ["lead generation", "sales intelligence", "lead scoring", "SaaS"],
+  "author": "AI Lead Finder",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.14.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}
