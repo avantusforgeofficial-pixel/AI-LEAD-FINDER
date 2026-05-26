@@ -1,67 +1,155 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+'use client';
 
-export default function SettingsPage() {
+import React, { useState } from 'react';
+import Sidebar from '@/components/Sidebar';
+import Header from '@/components/Header';
+import Card from '@/components/Card';
+import Button from '@/components/Button';
+import Input from '@/components/Input';
+import Badge from '@/components/Badge';
+import { Moon, Sun, Lock, Trash2, Save } from 'lucide-react';
+
+const SettingsPage: React.FC = () => {
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [workspaceName, setWorkspaceName] = useState('My Workspace');
+  const [aiModel, setAiModel] = useState('gpt-4');
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+
+  const handleSave = () => {
+    // Simulate save
+    console.log('Settings saved');
+  };
+
   return (
-    <main className="min-h-screen bg-slate-950 px-4 py-10 text-slate-100 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-6xl space-y-8">
-        <div>
-          <p className="text-sm uppercase tracking-[0.35em] text-slate-400">Settings</p>
-          <h1 className="mt-3 text-3xl font-semibold text-white">Workspace preferences</h1>
-          <p className="mt-3 text-slate-300">Manage API keys, billing, profile details, and your team settings in one place.</p>
-        </div>
-        <div className="grid gap-6 xl:grid-cols-[2fr_1fr]">
-          <section className="glass-panel rounded-[2rem] border border-white/10 p-6">
-            <div className="space-y-5">
+    <div className="flex bg-gray-950">
+      <Sidebar />
+      <div className="flex-1 ml-64">
+        <Header title="Settings" subtitle="Manage your workspace" />
+
+        <div className="p-6 max-w-4xl space-y-6">
+          {/* Workspace Settings */}
+          <Card variant="glass" className="p-6 space-y-4">
+            <h2 className="text-lg font-bold">Workspace</h2>
+            <Input
+              label="Workspace Name"
+              value={workspaceName}
+              onChange={(e) => setWorkspaceName(e.target.value)}
+            />
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Workspace ID</label>
+              <div className="px-4 py-2 bg-gray-800 rounded-lg text-gray-400 font-mono text-sm border border-gray-700">
+                ws_1234567890
+              </div>
+            </div>
+          </Card>
+
+          {/* Theme Settings */}
+          <Card variant="glass" className="p-6 space-y-4">
+            <h2 className="text-lg font-bold">Appearance</h2>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-3">Theme</label>
+              <div className="flex gap-4">
+                <Button
+                  variant={theme === 'dark' ? 'primary' : 'ghost'}
+                  className="flex items-center gap-2"
+                  onClick={() => setTheme('dark')}
+                >
+                  <Moon size={16} />
+                  Dark
+                </Button>
+                <Button
+                  variant={theme === 'light' ? 'primary' : 'ghost'}
+                  className="flex items-center gap-2"
+                  onClick={() => setTheme('light')}
+                >
+                  <Sun size={16} />
+                  Light
+                </Button>
+              </div>
+            </div>
+          </Card>
+
+          {/* AI Settings */}
+          <Card variant="glass" className="p-6 space-y-4">
+            <h2 className="text-lg font-bold">AI Settings</h2>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">AI Model</label>
+              <select
+                value={aiModel}
+                onChange={(e) => setAiModel(e.target.value)}
+                className="w-full px-4 py-2 bg-gray-800 border border-gray-700 text-white rounded-lg focus:border-blue-600"
+              >
+                <option value="gpt-4">GPT-4 (Most Powerful)</option>
+                <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Faster)</option>
+              </select>
+            </div>
+          </Card>
+
+          {/* Notification Settings */}
+          <Card variant="glass" className="p-6 space-y-4">
+            <h2 className="text-lg font-bold">Notifications</h2>
+            <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm uppercase tracking-[0.3em] text-slate-400">API keys</p>
-                <p className="mt-2 text-slate-300">Create a secure key to connect AI Lead Finder to your own integration workflows.</p>
+                <p className="text-white font-medium">Email Notifications</p>
+                <p className="text-gray-400 text-sm">Receive updates about your leads</p>
               </div>
-              <div className="grid gap-4 md:grid-cols-2">
-                <Input readOnly value="sk_live_****************" />
-                <Button className="w-full">Regenerate key</Button>
-              </div>
+              <button
+                onClick={() => setNotificationsEnabled(!notificationsEnabled)}
+                className={`w-12 h-6 rounded-full transition-colors ${
+                  notificationsEnabled ? 'bg-blue-600' : 'bg-gray-700'
+                }`}
+              >
+                <div
+                  className={`w-5 h-5 bg-white rounded-full transition-transform ${
+                    notificationsEnabled ? 'translate-x-6' : 'translate-x-0.5'
+                  }`}
+                />
+              </button>
             </div>
-          </section>
-          <section className="glass-panel rounded-[2rem] border border-white/10 p-6">
-            <div className="space-y-5">
-              <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Billing</p>
-              <p className="text-slate-300">Your current plan is Premium with unlimited outreach campaigns and lead enrichment.</p>
-              <div className="grid gap-4">
-                <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-4">
-                  <p className="text-sm text-slate-400">Next invoice</p>
-                  <p className="mt-2 font-semibold text-white">May 28, 2026</p>
+          </Card>
+
+          {/* API Keys */}
+          <Card variant="glass" className="p-6 space-y-4">
+            <h2 className="text-lg font-bold">API Keys</h2>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg border border-gray-700">
+                <div className="flex items-center gap-3">
+                  <Lock size={18} className="text-gray-400" />
+                  <div>
+                    <p className="text-white text-sm">Default API Key</p>
+                    <p className="text-gray-400 text-xs">sk_test_1234...7890</p>
+                  </div>
                 </div>
-                <Button className="w-full">Update billing info</Button>
+                <Button variant="ghost" size="sm">Copy</Button>
               </div>
             </div>
-          </section>
-        </div>
-        <section className="glass-panel rounded-[2rem] border border-white/10 p-6">
-          <div className="grid gap-6 xl:grid-cols-2">
-            <div className="space-y-4">
-              <p className="text-sm uppercase tracking-[0.3em] text-slate-400">User profile</p>
-              <Input placeholder="Full name" value="Sophie Chang" readOnly />
-              <Input placeholder="Team email" value="sophie@aileadfinder.com" readOnly />
-              <Textarea value="Product leader with a focus on sales automation and lead intelligence." readOnly />
-            </div>
-            <div className="space-y-4">
-              <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Team members</p>
-              <div className="space-y-3 rounded-3xl border border-white/10 bg-slate-950/80 p-5">
-                <p className="font-semibold text-white">Ari Johnson</p>
-                <p className="text-sm text-slate-400">Head of Growth</p>
-              </div>
-              <div className="space-y-3 rounded-3xl border border-white/10 bg-slate-950/80 p-5">
-                <p className="font-semibold text-white">Mia Patel</p>
-                <p className="text-sm text-slate-400">Sales Ops Lead</p>
-              </div>
-              <Button className="w-full">Invite team member</Button>
-            </div>
+            <Button variant="secondary" className="w-full">Generate New Key</Button>
+          </Card>
+
+          {/* Danger Zone */}
+          <Card variant="glass" className="p-6 space-y-4 border-red-900/50">
+            <h2 className="text-lg font-bold text-red-400">Danger Zone</h2>
+            <p className="text-gray-400 text-sm">These actions cannot be undone.</p>
+            <Button variant="danger" className="w-full flex items-center justify-center gap-2">
+              <Trash2 size={18} />
+              Delete Workspace
+            </Button>
+          </Card>
+
+          {/* Save Button */}
+          <div className="flex gap-2 pt-4">
+            <Button variant="primary" size="lg" className="flex-1 flex items-center justify-center gap-2" onClick={handleSave}>
+              <Save size={18} />
+              Save Changes
+            </Button>
+            <Button variant="secondary" size="lg" className="flex-1">
+              Cancel
+            </Button>
           </div>
-        </section>
+        </div>
       </div>
-    </main>
+    </div>
   );
-}
+};
+
+export default SettingsPage;

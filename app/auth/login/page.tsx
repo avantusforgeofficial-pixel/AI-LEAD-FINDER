@@ -1,33 +1,90 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+'use client';
 
-export default function LoginPage() {
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import Button from '@/components/Button';
+import Input from '@/components/Input';
+import Card from '@/components/Card';
+import { Zap } from 'lucide-react';
+
+const LoginPage: React.FC = () => {
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+
+    // Simulate API call
+    setTimeout(() => {
+      if (email && password) {
+        router.push('/dashboard');
+      } else {
+        setError('Please fill in all fields');
+        setIsLoading(false);
+      }
+    }, 1000);
+  };
+
   return (
-    <main className="min-h-screen bg-slate-950 px-4 py-16 text-slate-100 sm:px-6 lg:px-8">
-      <div className="mx-auto w-full max-w-md rounded-[2rem] border border-white/10 bg-slate-900/85 p-10 shadow-glow backdrop-blur-xl">
-        <div className="mb-8 text-center">
-          <p className="text-sm uppercase tracking-[0.35em] text-slate-400">Welcome back</p>
-          <h1 className="mt-3 text-3xl font-semibold text-white">Log in to AI Lead Finder</h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-blue-950/20 to-gray-950 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+              <Zap size={24} className="text-white" />
+            </div>
+            <span className="font-bold text-2xl">LeadFinder</span>
+          </div>
+          <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
+          <p className="text-gray-400">Sign in to your account to continue</p>
         </div>
-        <form className="space-y-5">
-          <div>
-            <label className="mb-2 block text-sm font-medium text-slate-300">Email</label>
-            <Input type="email" placeholder="team@company.com" />
+
+        <Card variant="glass" className="p-8">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <Input
+              label="Email Address"
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              label="Password"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+            <Button type="submit" variant="primary" isLoading={isLoading} className="w-full">
+              Sign In
+            </Button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <p className="text-gray-400 text-sm">
+              Don't have an account?{' '}
+              <Link href="/auth/register" className="text-blue-400 hover:text-blue-300">
+                Sign up
+              </Link>
+            </p>
           </div>
-          <div>
-            <label className="mb-2 block text-sm font-medium text-slate-300">Password</label>
-            <Input type="password" placeholder="Enter your password" />
+
+          <div className="mt-4 text-center">
+            <Link href="/auth/forgot-password" className="text-gray-400 hover:text-gray-300 text-sm">
+              Forgot password?
+            </Link>
           </div>
-          <div className="flex items-center justify-between text-sm text-slate-400">
-            <Link href="/auth/forgot-password" className="hover:text-white">Forgot password?</Link>
-          </div>
-          <Button type="submit" className="w-full">Continue</Button>
-        </form>
-        <p className="mt-6 text-center text-sm text-slate-400">
-          New to AI Lead Finder? <Link href="/auth/register" className="text-white hover:text-accent">Create an account</Link>
-        </p>
+        </Card>
       </div>
-    </main>
+    </div>
   );
-}
+};
+
+export default LoginPage;
