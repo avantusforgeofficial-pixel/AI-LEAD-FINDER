@@ -1,15 +1,19 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "AI Lead Finder",
-  description: "A modern SaaS dashboard for AI-powered lead generation and outreach.",
+  title: 'AI Lead Finder - AI-Powered Lead Generation',
+  description: 'Find and engage high-quality leads with AI',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body>{children}</body>
+    <html lang="en">
+      <body className="bg-gray-950 text-white">{children}</body>
     </html>
   );
 }
